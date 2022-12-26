@@ -48,4 +48,12 @@ public class UserInfo {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "email: '" + email + '\'' +
+                "\nid: '" + id + '\'' +
+                "\nphone: '" + phone + '\'' +
+                "\naddress: '" + address + '\'';
+    }
 }

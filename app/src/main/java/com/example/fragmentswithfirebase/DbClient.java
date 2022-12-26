@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class DbClient {
@@ -46,5 +47,13 @@ public class DbClient {
         });
 
         return value[0];
-    };
+    }
+
+    ;
+
+    public Query findUserByEmail(String searchByEmail) {
+        DatabaseReference myRef = database.getReference(USERS_COLLECTION_ID);
+
+        return myRef.orderByChild("email").equalTo(searchByEmail);
+    }
 }
