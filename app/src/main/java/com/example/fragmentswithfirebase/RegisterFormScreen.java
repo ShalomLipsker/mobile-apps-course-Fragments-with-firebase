@@ -56,18 +56,23 @@ public class RegisterFormScreen extends Fragment {
         String phone = phoneField.getText().toString();
 
         if (email == "" || password == "" || address == "" || phone == "") {
-            Toast.makeText(getActivity(), "one or more filed are empty", Toast.LENGTH_LONG).show();
+            Toast.makeText(MyApplication.getAppContext(), "one or more filed are empty", Toast.LENGTH_LONG).show();
         } else {
             UserAuth userAuth = UserAuth.getInstance();
 
             userAuth.register(email, password, getActivity());
-            userAuth.login(email, password, getActivity());
+            userAuth.login(email, password, getActivity(), () -> {
+                Navigation.findNavController(view).navigate(R.id.action_loginFormScreen_to_welcomeScreen);
+                return null;
+            });
             String userId = userAuth.getCurrentUser().getUid();
 
             UserInfo userInfo = new UserInfo(email, userId, phone, address);
 
             DbClient dbClient = DbClient.getInstance();
             dbClient.createUser(userId, userInfo);
+
+            Toast.makeText(MyApplication.getAppContext(), "registration success", Toast.LENGTH_LONG).show();
 
             Navigation.findNavController(view).navigate(R.id.action_registerFormScreen_to_welcomeScreen);
         }

@@ -51,7 +51,15 @@ public class LoginFormScreen extends Fragment {
 
         UserAuth userAuth = UserAuth.getInstance();
 
-        userAuth.login(emailField.getText().toString(), passwordField.getText().toString(), getActivity());
-        Navigation.findNavController(view).navigate(R.id.action_loginFormScreen_to_welcomeScreen);
+        userAuth.login(
+                emailField.getText().toString(),
+                passwordField.getText().toString(),
+                getActivity(),
+                () ->  {
+                    Navigation.findNavController(view).navigate(R.id.action_loginFormScreen_to_welcomeScreen);
+                    return null;
+                }
+        );
+
     }
 }

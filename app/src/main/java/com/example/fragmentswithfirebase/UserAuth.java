@@ -11,6 +11,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.concurrent.Callable;
+
 public class UserAuth {
 
     private FirebaseAuth mAuth;
@@ -28,16 +30,21 @@ public class UserAuth {
     }
 
 
-    public void login(String email, String password, FragmentActivity executor) {
+    public void login(String email, String password, FragmentActivity executor, Callable<Void> cb) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(executor, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(executor, "login success", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MyApplication.getAppContext(), "login success", Toast.LENGTH_LONG).show();
+                            try {
+                                cb.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         } else {
-                            Toast.makeText(executor, "login failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MyApplication.getAppContext(), "login failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -49,9 +56,9 @@ public class UserAuth {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(executor, "register success", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MyApplication.getAppContext(), "register success", Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(executor, "register failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MyApplication.getAppContext(), "register failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
